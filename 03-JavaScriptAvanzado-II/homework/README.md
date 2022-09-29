@@ -16,6 +16,13 @@ Para ejecutar los test, anda a esta carpeta y ejecutá:
 Crear un método `repeatify` que este disponible para _todos_ los objetos `Strings`. Esta función debe aceptar un `entero` que indica cuantas veces el string tiene que repetirse. La función retorna el string repetido el número de veces que indicamos. Controlar que el número no sea menor que cero, y si es cero que devuelva `''` (String vacío).
 
 ```javascript
+String.prototype.repeatify = function(num) { 
+    var aux="";
+    for(var i = 0; i < num; i++)
+        aux = aux + this;
+    return aux;
+}
+
 console.log('hola'.repeatify(3));   //holaholahola
 ```
 
@@ -28,6 +35,27 @@ console.log('hola'.repeatify(3));   //holaholahola
 Probá tu solución con el siguiente código:
 
 ```javascript
+var shape = {
+    type : "",
+    getType(){ 
+        console.log(this.type);
+    },
+    /*function shape(type){
+        this.type=type
+    }*/
+}
+function Triangle(a,b,c){
+    this.type = "Triangle";
+    this.a = a;
+    this.b = b;
+    this.c = c;
+    
+}
+function gerPerimeter(){
+        return a + b + c;
+    }
+
+
 > var t = new Triangle(1, 2, 3);
 > t instanceof Triangle
 // true
