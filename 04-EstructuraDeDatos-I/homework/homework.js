@@ -15,9 +15,18 @@ Como ejercicio adicional y completamente opcional, al terminar de resolver este 
 */
 
 function nFactorial(n) {
+  if (n < 0) return false; //'solo números positivos'
+  if (n < 2 && n > -1) return 1;
+  return n * nFactorial(n - 1);
 }
 
 function nFibonacci(n) {
+   //7 --> 13
+  if (n < 0) return false; //'Solo números naturales'
+  if (n === 0) return 0;
+  if (n === 1) return 1;
+  return nFibonacci(n - 1) + nFibonacci(n - 2);
+  //                    8    +     5    ---> 13
 }
 
 /*
@@ -30,8 +39,24 @@ Pueden utilizar class o función constructora.
 */
 
 function Queue() {
-
+  this.queue = [];
 }
+Queue.prototype.enqueue = function (n) {
+  // agrega un elemento al final de la cola
+  this.queue.push(n);
+};
+Queue.prototype.dequeue = function () {
+  // elimina el primer elemento de la cola
+  return this.queue.shift();
+};
+Queue.prototype.size = function () {
+  // muentra el tamaño del arreglo/cola
+  return this.queue.length;
+};
+Queue.prototype.show = function () {
+  // consologeua la cola
+  console.log(this.queue);
+};
 
 // No modifiquen nada debajo de esta linea
 // --------------------------------
