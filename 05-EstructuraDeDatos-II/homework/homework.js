@@ -1,5 +1,8 @@
 "use strict";
 
+const { hasEmbeddedError } = require("@11ty/eleventy/src/EleventyErrorUtil");
+const henryReadingTime = require("henry-reading-time");
+
 /*
 Implementar la clase LinkedList, definiendo los siguientes métodos:
   - add: agrega un nuevo nodo al final de la lista;
@@ -107,19 +110,76 @@ LinkedList.prototype.search = function(data){
 /*
 Implementar la clase HashTable.
 
-Nuetra tabla hash, internamente, consta de un arreglo de buckets (slots, contenedores, o casilleros; es decir, posiciones posibles para almacenar la información), donde guardaremos datos en formato clave-valor (por ejemplo, {instructora: 'Ani'}).
-Para este ejercicio, la tabla debe tener 35 buckets (numBuckets = 35). (Luego de haber pasado todos los tests, a modo de ejercicio adicional, pueden modificar un poco la clase para que reciba la cantidad de buckets por parámetro al momento de ser instanciada.)
+Nuetra tabla hash, internamente, consta de un arreglo de buckets (slots, contenedores, o casilleros; es decir, posiciones 
+  posibles para almacenar la información), donde guardaremos datos en formato clave-valor (por ejemplo, {instructora: 'Ani'}).
+Para este ejercicio, la tabla debe tener 35 buckets (numBuckets = 35). 
+(Luego de haber pasado todos los tests, a modo de ejercicio adicional, pueden modificar un poco la
+   clase para que reciba la cantidad de buckets por parámetro al momento de ser instanciada.)
 
 La clase debe tener los siguientes métodos:
-  - hash: función hasheadora que determina en qué bucket se almacenará un dato. Recibe un input alfabético, suma el código numérico de cada caracter del input (investigar el método charCodeAt de los strings) y calcula el módulo de ese número total por la cantidad de buckets; de esta manera determina la posición de la tabla en la que se almacenará el dato.
-  - set: recibe el conjunto clave valor (como dos parámetros distintos), hashea la clave invocando al método hash, y almacena todo el conjunto en el bucket correcto.
-  - get: recibe una clave por parámetro, y busca el valor que le corresponde en el bucket correcto de la tabla.
-  - hasKey: recibe una clave por parámetro y consulta si ya hay algo almacenado en la tabla con esa clave (retorna un booleano).
+  - hash: función hasheadora que determina en qué bucket se almacenará un dato. Recibe un input alfabético, suma el código
+   numérico de cada caracter del input (investigar el método charCodeAt de los strings) y calcula el módulo de ese número total
+    por la cantidad de buckets; de esta manera determina la posición de la tabla en la que se almacenará el dato.
 
-Ejemplo: supongamos que quiero guardar {instructora: 'Ani'} en la tabla. Primero puedo chequear, con hasKey, si ya hay algo en la tabla con el nombre 'instructora'; luego, invocando set('instructora', 'Ani'), se almacenará el par clave-valor en un bucket específico (determinado al hashear la clave)
+  - set: recibe el conjunto clave valor (como dos parámetros distintos), hashea la clave invocando al método hash,
+   y almacena todo el conjunto en el bucket correcto.
+
+  - get: recibe una clave por parámetro, y busca el valor que le corresponde en el bucket correcto de la tabla.
+
+  - hasKey: recibe una clave por parámetro y consulta si ya hay algo almacenado en la tabla con esa clave 
+  (retorna un booleano).
+
+Ejemplo: supongamos que quiero guardar {instructora: 'Ani'} en la tabla. Primero puedo chequear, con hasKey,
+  si ya hay algo en la tabla con el nombre 'instructora'; luego, invocando set('instructora', 'Ani'), 
+  se almacenará el par clave-valor en un bucket específico (determinado al hashear la clave)
 */
 
-function HashTable() {}
+function HashTable() {
+  this.numBuckets = 35;
+  this.arreglo = [];
+}
+
+HashTable.prototype.hash = function (data) { 
+  var codigo = 0;
+  for(var i=0; i < data.length; i++){
+    codigo = codigo + data.charCodeAt(i);
+  }
+  return codigo % this.numBuckets;
+} 
+
+/*- set: recibe el conjunto clave valor (como dos parámetros distintos), hashea la clave invocando al método hash,
+   y almacena todo el conjunto en el bucket correcto.*/
+HashTable.prototype.set = function (key, value) { 
+  if(typeof key !== "string"){
+    throw TypeError('Keys must be strings');
+    } 
+
+  var objeto = {}
+  objeto[key] = value;
+  var indice = this.hash(key) // creo el hash para de la key para el indice
+
+  if(!this.arreglo[indice]){  //si no existe nada en la posicion del arreglo, agrego el nuevo objeto
+    this.arreglo[indice] = objeto;
+  }
+  this.arreglo[indice][key]= value;  // y si existe algo, le sumo unas nuevas key:value;
+  
+  
+  //return TypeError('Keys must be strings');
+}
+
+//- get: recibe una clave por parámetro, y busca el valor que le corresponde en el bucket correcto de la tabla.
+HashTable.prototype.get = function (key, value) { 
+  var indice = this.hash(key)
+  return this.arreglo[indice][key]; // arreglo del hashtable, el indice del arreglo y el valor de la key a buscar
+}
+
+//- hasKey: recibe una clave por parámetro y consulta si ya hay algo almacenado en la tabla con esa clave (retorna un booleano).
+HashTable.prototype.hasKey = function (key) { 
+  var indice = this.hash(key)
+  if(this.arreglo[indice][key]!== undefined)
+    return true;
+  else return false;
+}
 
 // No modifiquen nada debajo de esta linea
 // --------------------------------
