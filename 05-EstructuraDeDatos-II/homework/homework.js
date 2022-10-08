@@ -3,17 +3,106 @@
 /*
 Implementar la clase LinkedList, definiendo los siguientes métodos:
   - add: agrega un nuevo nodo al final de la lista;
-  - remove: elimina el último nodo de la lista y retorna su valor (tener en cuenta el caso particular de una lista de un solo nodo y de una lista vacía);
-  - search: recibe un parámetro y lo busca dentro de la lista, con una particularidad: el parámetro puede ser un valor o un callback. En el primer caso, buscamos un nodo cuyo valor coincida con lo buscado; en el segundo, buscamos un nodo cuyo valor, al ser pasado como parámetro del callback, retorne true. 
+  - remove: elimina el último nodo de la lista y retorna su valor (tener en cuenta el caso particular 
+    de una lista de un solo nodo y de una lista vacía);
+  - search: recibe un parámetro y lo busca dentro de la lista, con una particularidad: 
+  el parámetro puede ser un valor o un callback. En el primer caso, buscamos un nodo cuyo valor 
+  coincida con lo buscado; en el segundo, buscamos un nodo cuyo valor, al ser pasado como parámetro del callback,
+   retorne true. 
   Ejemplo: 
   search(3) busca un nodo cuyo valor sea 3;
   search(isEven), donde isEven es una función que retorna true cuando recibe por parámetro un número par, busca un nodo cuyo valor sea un número par.
   En caso de que la búsqueda no arroje resultados, search debe retornar null.
 */
 
-function LinkedList() {}
+function LinkedList() {
+  this._length = 0;
+  this.head = null;
+}
 
-function Node(value) {}
+function Node(value) {
+  this.value = value;
+  this.next = null;
+}
+
+LinkedList.prototype.add = function(data) {
+  var nod = new Node(data);
+  var current = this.head; // donde apunta la lista al 1er nodo
+  // si la lista esta vacia
+  if(current === null){
+    this.head = nod;
+    this._length++;
+    return nod;
+  }
+  // si la lista no esta vacia, la recorro hasta encontrar el ultimo nodo que apunta a null
+  while(current.next){
+    current = current.next;
+  }
+  // entonces al .next del ultimo nodo le asigno el nodo nuevo
+  current.next = nod;
+  this._length++;
+  return nod;
+
+}
+
+LinkedList.prototype.remove = function(){
+  //var node = new Node(data);
+  var current = this.head;
+  
+  if(this.head === null){
+    return null;
+  }
+  if(current.next === null){
+    this.head = null;
+    return current.value;
+  }
+  while(current.next.next){
+    current = current.next
+  }
+  // se aguarda el ultimo elemento
+  var current1 = current.next;
+  // se borra el ultimo elemento
+  current.next = null;
+  return current1.value;
+
+  
+}
+
+/*
+- search: recibe un parámetro y lo busca dentro de la lista, con una particularidad: 
+  el parámetro puede ser un valor o un callback. En el primer caso, buscamos un nodo cuyo valor 
+  coincida con lo buscado; en el segundo, buscamos un nodo cuyo valor, al ser pasado como parámetro del callback,
+   retorne true. 
+  Ejemplo: 
+  search(3) busca un nodo cuyo valor sea 3;
+  search(isEven), donde isEven es una función que retorna true cuando recibe por parámetro un número par, busca un nodo cuyo valor sea un número par.
+  En caso de que la búsqueda no arroje resultados, search debe retornar null.
+*/
+LinkedList.prototype.search = function(data){
+  var current = this.head;
+
+  if(!current){ //si no existen nodos en la lista(head) retrono null
+    return null;
+  } 
+
+  while(current){
+    //recibo una funcion
+    if(typeof data === "function"){
+      if(data(current.value)){ // el callback "data" le paso el valor del nodo actual para 
+        return current.value;  // que me devuelda un boo que si es true retorna el valor del nodo
+      }
+    }
+    //recibo un valor
+    if(current.value === data){ 
+      return current.value;
+    }
+    current = current.next;
+  }
+  // si no encuentra el valor, retorno null porque no existe
+  return null;
+    
+}
+
 
 /*
 Implementar la clase HashTable.
