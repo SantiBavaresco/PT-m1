@@ -32,7 +32,31 @@ function selectionSort(array) {
   // el array recibido como parámetro utilizando dos arreglos
   // Devolver el array ordenado resultante
   // Tu código:
+  var intercambio = {
+    value : 0,
+    position : 0
+  }
+  var arrayOriginal = array;
+  var arrayAux2 = array;
+  var minValue = array[0];
+  var aux = arrayOriginal[0];
+  
+  for(var j=0; j < 4; j++) 
+  { 
+    for(var i = j; i < array.length; i++){
+        if(arrayOriginal[i] <= minValue){ 
+          intercambio.value = arrayOriginal[i];
+          intercambio.position = i;
+          minValue = arrayOriginal[i];
+        }
+      }
 
+    aux = arrayOriginal[j];
+    arrayAux2[j] = (intercambio.value);
+    arrayOriginal[intercambio.position] = aux;
+    minValue = arrayAux2[j+1];
+  }
+  return arrayOriginal;
 }
 
 
