@@ -6,13 +6,14 @@ function factorear(num) {
   // los factores por los cuales se va dividiendo a dicho número (De menor a mayor)
   // Ej: factorear(180) --> [1, 2, 2, 3, 3, 5] Ya que 1x2x2x3x3x5 = 180 y son todos números primos
   // Tu código:
-  var array = [];
+  var array = [1];
   var aux = num;
   var x = 2;
-  array.push(1);
+  //array.push(1);
+
   while (aux > 1)
     {
-      if( (aux % x === 0))
+      if(aux % x === 0)
         {
           array.push(x);
           aux = aux / x;
@@ -31,7 +32,23 @@ function bubbleSort(array) {
   // el array recibido como parámetro
   // Devolver el array ordenado resultante
   // Tu código:
-
+  var arrayAux = array;
+  var aux = 0;
+  var index = arrayAux.length;
+  while(index > 1)
+  {
+    for(var i=0; i < index; i++)
+    {
+      if(arrayAux[i] > arrayAux[i+1]) 
+      {
+        aux = arrayAux[i];
+        arrayAux[i] = arrayAux[i+1];
+        arrayAux[i+1] = aux;
+      }
+    }
+    index--;
+  }
+  return arrayAux;
 }
 
 
@@ -40,7 +57,21 @@ function insertionSort(array) {
   // el array recibido como parámetro utilizando arreglos
   // Devolver el array ordenado resultante
   // Tu código:
-
+  var arrayAux = array;
+  var aux = 0;
+  for (var i=0; i < arrayAux.length; i++)
+   {
+    var j = i;
+    while((arrayAux[j] < arrayAux[j-1]) && (j > 0))
+      {
+        aux = arrayAux[j];
+        arrayAux[j] = arrayAux[j-1];
+        arrayAux[j-1] = aux;
+        j--; // si se hace el cambio, vuelto a la posicion anterior para 
+            // para volvera verificar si el nuevo j es menos o mayor
+      }
+   }
+   return arrayAux;
 }
 
 
